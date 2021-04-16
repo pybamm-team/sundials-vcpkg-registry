@@ -15,13 +15,17 @@ string(COMPARE EQUAL "${VCPKG_LIBRARY_LINKAGE}" "static" SUN_BUILD_STATIC)
 string(COMPARE EQUAL "${VCPKG_LIBRARY_LINKAGE}" "dynamic" SUN_BUILD_SHARED)
 
 if ("klu" IN_LIST FEATURES)
-  set(CMAKE_DISABLE_FIND_PACKAGE_SUITESPARSE OFF)
   set(ENABLE_KLU ON)
-  set(KLU_INCLUDE_DIR ${_VCPKG_INSTALLED_DIR}/x64-windows-static/include/suitesparse)
-  set(KLU_LIBRARY_DIR ${_VCPKG_INSTALLED_DIR}/x64-windows-static/lib)
 else()
   set(CMAKE_DISABLE_FIND_PACKAGE_SUITESPARSE ON)
 endif()
+
+vcpkg_extract_source_archive_ex(
+  OUT_SOURCE_PATH SOURCE_PATH
+  ARCHIVE ${ARCHIVE}
+  PATCHES 
+    "find-klu.patch"
+)
 
 vcpkg_configure_cmake(
     SOURCE_PATH ${SOURCE_PATH}
@@ -31,8 +35,6 @@ vcpkg_configure_cmake(
         -DBUILD_STATIC_LIBS=${SUN_BUILD_STATIC}
         -DBUILD_SHARED_LIBS=${SUN_BUILD_SHARED}
         -DENABLE_KLU=${ENABLE_KLU}
-        -DKLU_INCLUDE_DIR=${KLU_INCLUDE_DIR}
-        -DKLU_LIBRARY_DIR=${KLU_LIBRARY_DIR}
 )
 
 vcpkg_install_cmake(DISABLE_PARALLEL)
