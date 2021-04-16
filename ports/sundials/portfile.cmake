@@ -1,14 +1,11 @@
-set(ARCHIVE_NAME "sundials-5.5.0")
-
-vcpkg_download_distfile(ARCHIVE
-    URLS "https://computation.llnl.gov/projects/sundials/download/${ARCHIVE_NAME}.tar.gz"
-    FILENAME "${ARCHIVE_NAME}.tar.gz"
-    SHA512 e8cba7341f6b8d647151fe5543e62a13adda363d4c96bdaba7a70925b2c58ec4f4f089a0d6c9c5a57c50fb32fa1285bd09b450697056bc3da24cf882c6c7c427
-)
-
-vcpkg_extract_source_archive_ex(
+vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
-    ARCHIVE ${ARCHIVE}
+    REPO LLNL/sundials
+    REF v5.7.0
+    SHA512 e29c6f2789e62a2d9564a9297f64ba882a5a6f897aeba6dfffffdbb404569b09aa088fa11b242643717a1e88931edf0fed7c8aee28b7e48f1c4bd42be1bef1ae
+    HEAD_REF master
+    PATCHES "find-klu.patch"
+    GITHUB_HOST https://github.com
 )
 
 string(COMPARE EQUAL "${VCPKG_LIBRARY_LINKAGE}" "static" SUN_BUILD_STATIC)
@@ -19,13 +16,6 @@ if ("klu" IN_LIST FEATURES)
 else()
   set(CMAKE_DISABLE_FIND_PACKAGE_SUITESPARSE ON)
 endif()
-
-vcpkg_extract_source_archive_ex(
-  OUT_SOURCE_PATH SOURCE_PATH
-  ARCHIVE ${ARCHIVE}
-  PATCHES 
-    "find-klu.patch"
-)
 
 vcpkg_configure_cmake(
     SOURCE_PATH ${SOURCE_PATH}
