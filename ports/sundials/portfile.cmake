@@ -1,7 +1,7 @@
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO LLNL/sundials
-    REF v5.8.0
+    REF v5.7.0
     SHA512 160868ed59ec535f9bb4846c5c1552b26e5fea04bf834c2615d53883c24fc055ab490adc22ebf5569d2c04140a83d27c77b48b6b030289da8a4cb2ff615e83c0
     HEAD_REF master
     PATCHES "find-klu.patch"
