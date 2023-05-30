@@ -25,6 +25,7 @@ vcpkg_configure_cmake(
         -DBUILD_STATIC_LIBS=${SUN_BUILD_STATIC}
         -DBUILD_SHARED_LIBS=${SUN_BUILD_SHARED}
         -DENABLE_KLU=${ENABLE_KLU}
+        -DENABLE_OPENMP=ON
 )
 
 vcpkg_install_cmake(DISABLE_PARALLEL)
