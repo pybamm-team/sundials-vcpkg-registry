@@ -21,7 +21,6 @@ endif()
 
 vcpkg_cmake_configure(
     SOURCE_PATH "${SOURCE_PATH}"
-    PREFER_NINJA
     OPTIONS 
         -DEXAMPLES_ENABLE_C=OFF
         -DEXAMPLES_ENABLE_CXX=OFF
