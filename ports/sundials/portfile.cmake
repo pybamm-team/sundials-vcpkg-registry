@@ -64,4 +64,4 @@ if(REMOVE_DLLS)
 endif()
 
 vcpkg_copy_pdbs()
-vcpkg_fixup_cmake_targets(CONFIG_PATH "lib/cmake/${PORT}")
+vcpkg_cmake_config_fixup(CONFIG_PATH "lib/cmake/${PORT}")
