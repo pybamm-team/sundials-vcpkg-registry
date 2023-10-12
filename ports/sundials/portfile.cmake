@@ -4,7 +4,9 @@ vcpkg_from_github(
     REF v6.5.0
     SHA512 89d00d874ab6409d609cc6d0b2723722b138a3733ee8c198e2342ade98661676ad1d4b819b4c4b0a90ea4f8233987a4a7c4cb5c456b3c1ca946436a6136a3c57
     HEAD_REF master
-    PATCHES "find-klu.patch"
+    PATCHES 
+        find-klu.patch
+        install-dlls-in-bin.patch
     GITHUB_HOST https://github.com
 )
 
@@ -18,7 +20,7 @@ else()
 endif()
 
 vcpkg_configure_cmake(
-    SOURCE_PATH ${SOURCE_PATH}
+    SOURCE_PATH "${SOURCE_PATH}"
     PREFER_NINJA
     OPTIONS 
         -DEXAMPLES_ENABLE=OFF
@@ -30,7 +32,7 @@ vcpkg_configure_cmake(
 
 vcpkg_install_cmake(DISABLE_PARALLEL)
 
-file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/include)
+file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")
 
 file(GLOB REMOVE_DLLS
     "${CURRENT_PACKAGES_DIR}/debug/lib/*.dll"
@@ -53,7 +55,7 @@ if(DEBUG_DLLS)
     file(INSTALL ${DEBUG_DLLS} DESTINATION ${CURRENT_PACKAGES_DIR}/debug/bin)
 endif()
 
-file(INSTALL ${SOURCE_PATH}/LICENSE DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT} RENAME copyright)
+file(INSTALL "${SOURCE_PATH}/LICENSE" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}" RENAME copyright)
 file(REMOVE "${CURRENT_PACKAGES_DIR}/LICENSE")
 file(REMOVE "${CURRENT_PACKAGES_DIR}/debug/LICENSE")
 
@@ -62,4 +64,4 @@ if(REMOVE_DLLS)
 endif()
 
 vcpkg_copy_pdbs()
-vcpkg_fixup_cmake_targets(CONFIG_PATH lib/cmake/${PORT})
+vcpkg_fixup_cmake_targets(CONFIG_PATH "lib/cmake/${PORT}")
