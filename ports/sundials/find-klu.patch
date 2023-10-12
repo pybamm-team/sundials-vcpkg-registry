@@ -13,10 +13,13 @@ index 0b6c275..182bea7 100644
 +  PATH_SUFFIXES
 +  include/suitesparse
 +  )
++message(STATUS "temp_KLU_INCLUDE_DIR: ${temp_KLU_INCLUDE_DIR}")
  if (temp_KLU_INCLUDE_DIR)
      set(KLU_INCLUDE_DIR ${temp_KLU_INCLUDE_DIR})
  endif()
- unset(temp_KLU_INCLUDE_DIR CACHE)
+-unset(temp_KLU_INCLUDE_DIR CACHE)
++unset(temp_KLU_INCLUDE_DIR CACHE)
++message(STATUS "KLU_INCLUDE_DIR: ${KLU_INCLUDE_DIR}")
  
 -if (KLU_LIBRARY)
 -    # We have (or were given) KLU_LIBRARY - get path to use for other Suitesparse libs
