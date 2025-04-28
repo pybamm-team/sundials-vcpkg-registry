@@ -10,7 +10,7 @@ See
 
 ### Why a separate registry?
 
-sundials [is available through vcpkg](https://github.com/microsoft/vcpkg/tree/master/ports/sundials), but is compiled without KLU
+Sundials [is available through vcpkg](https://github.com/microsoft/vcpkg/tree/master/ports/sundials), but is compiled without KLU
 support.  To enable this, the portfile (among other things) must be
 modified to enable KLU support (i.e. setting `KLU_ENABLE` to `TRUE`) but
 also find the SuiteSparse library.
