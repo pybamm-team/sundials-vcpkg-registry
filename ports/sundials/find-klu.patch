@@ -1,8 +1,8 @@
 diff --git a/cmake/tpl/FindKLU.cmake b/cmake/tpl/FindKLU.cmake
-index 0b6c275..182bea7 100644
+index e3142b462..ceffc545a 100644
 --- a/cmake/tpl/FindKLU.cmake
 +++ b/cmake/tpl/FindKLU.cmake
-@@ -39,41 +39,65 @@ elseif(APPLE)
+@@ -39,41 +39,64 @@ elseif(APPLE)
  endif()
  
  ### Find include dir
@@ -82,7 +82,7 @@ index 0b6c275..182bea7 100644
      mark_as_advanced(BTF_LIBRARY)
  endif ()
  
-@@ -83,10 +107,15 @@ if (NOT SUITESPARSECONFIG_LIBRARY)
+@@ -83,10 +106,15 @@ if (NOT SUITESPARSECONFIG_LIBRARY)
      if(WIN32 AND NOT MSYS)
          set(CMAKE_FIND_LIBRARY_PREFIXES "")
      endif()
@@ -99,14 +99,12 @@ index 0b6c275..182bea7 100644
  set(KLU_LIBRARIES ${KLU_LIBRARY} ${AMD_LIBRARY} ${COLAMD_LIBRARY} ${BTF_LIBRARY} ${SUITESPARSECONFIG_LIBRARY})
  
  # set package variables including KLU_FOUND
-@@ -105,8 +134,9 @@ if(KLU_FOUND)
-   endif()
+@@ -105,7 +133,8 @@ if(KLU_FOUND)
  
    set_target_properties(SUNDIALS::KLU PROPERTIES
--    INTERFACE_INCLUDE_DIRECTORIES "${KLU_INCLUDE_DIR}"
+     INTERFACE_INCLUDE_DIRECTORIES "${KLU_INCLUDE_DIR}"
 -    INTERFACE_LINK_LIBRARIES "${KLU_LIBRARIES}"
 -    IMPORTED_LOCATION "${KLU_LIBRARY}")
-+    INTERFACE_INCLUDE_DIRECTORIES "${KLU_INCLUDE_DIR}"
 +    INTERFACE_LINK_LIBRARIES "$<IF:$<CONFIG:DEBUG>,${KLU_LIBRARIES_DEBUG},${KLU_LIBRARIES_RELEASE}>"
 +    IMPORTED_LOCATION_DEBUG "${KLU_LIBRARY_DEBUG}"
 +    IMPORTED_LOCATION_RELEASE "${KLU_LIBRARY_RELEASE}")
