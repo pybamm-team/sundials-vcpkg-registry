@@ -29,7 +29,6 @@ index 0b6c275..182bea7 100644
 +    lib
 +    PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/debug"
 +    NO_DEFAULT_PATH
-+    REQUIRED
 +    )
  
 -    # force CACHE update to show user DIR that will be used
