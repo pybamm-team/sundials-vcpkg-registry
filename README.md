@@ -1,12 +1,16 @@
-A [vcpkg](https://github.com/microsoft/vcpkg) registry providing a portfile for the [sundials library](https://computing.llnl.gov/projects/sundials/sundials-software) with a feature to 
+# PyBaMM Sundials VCPKG registry
+
+A [vcpkg](https://github.com/microsoft/vcpkg) registry providing a portfile for the
+[sundials library](https://computing.llnl.gov/projects/sundials/sundials-software) with a feature to 
 enable compilation against [SuiteSparse](https://people.engr.tamu.edu/davis/suitesparse.html)'s KLU algorithm.
 
 See
 - [Selecting library features](https://github.com/microsoft/vcpkg/blob/master/docs/users/selecting-library-features.md)
 - [Registries: Bring your own libraries to vcpkg](https://devblogs.microsoft.com/cppblog/registries-bring-your-own-libraries-to-vcpkg/)
+
 ### Why a separate registry?
 
-sundials [is available through vcpkg](https://github.com/microsoft/vcpkg/tree/master/ports/sundials), but is compiled without KLU
+Sundials [is available through vcpkg](https://github.com/microsoft/vcpkg/tree/master/ports/sundials), but is compiled without KLU
 support.  To enable this, the portfile (among other things) must be
 modified to enable KLU support (i.e. setting `KLU_ENABLE` to `TRUE`) but
 also find the SuiteSparse library.
@@ -32,7 +36,7 @@ Next, you can install sundials with KLU support with
 ```shell
 vcpkg install sundials[klu] --feature-flags=registries
 ```
-this will installed sundials with KLU support, along with the required dependencies
+this will install sundials with KLU support, along with the required dependencies
 (e.g. SuiteSparse).
 
 ### Summary of changes
