@@ -1,23 +1,16 @@
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO LLNL/sundials
-    REF v6.5.0
-    SHA512 89d00d874ab6409d609cc6d0b2723722b138a3733ee8c198e2342ade98661676ad1d4b819b4c4b0a90ea4f8233987a4a7c4cb5c456b3c1ca946436a6136a3c57
+    REF v7.3.0
+    SHA512 5bfe9e944760cc8ec62ca2f20110c2265c24270a0a0ac9744dfeaef86b029c1ff108b9c316d2a0a1717b79029f2d60599683a7cf8da8c17ef597da97a5228acb
     HEAD_REF master
-    PATCHES 
-        find-klu.patch
-        install-dlls-in-bin.patch
     GITHUB_HOST https://github.com
 )
 
 string(COMPARE EQUAL "${VCPKG_LIBRARY_LINKAGE}" "static" SUN_BUILD_STATIC)
 string(COMPARE EQUAL "${VCPKG_LIBRARY_LINKAGE}" "dynamic" SUN_BUILD_SHARED)
 
-if ("klu" IN_LIST FEATURES)
-  set(ENABLE_KLU ON)
-else()
-  set(CMAKE_DISABLE_FIND_PACKAGE_SUITESPARSE ON)
-endif()
+set(ENABLE_KLU ON)
 
 vcpkg_cmake_configure(
     SOURCE_PATH "${SOURCE_PATH}"
