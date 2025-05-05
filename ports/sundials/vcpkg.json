@@ -17,7 +17,7 @@
     "features": {
         "klu": {
             "description": "KLU support for SUNDIALS",
-            "dependencies": ["suitesparse"]
+            "dependencies": ["suitesparse-klu"]
         }
     }
 }
