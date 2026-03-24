@@ -4,6 +4,8 @@ vcpkg_from_github(
     REF v7.6.0
     SHA512 b6d15f68f25c5326bd42abb5e3652cc98e83d2eb31b213c9144b46c5b93fd123be5972e9d36217fdd09a0002dee3f78e530c21eda85f3b4d1d8d93b007546ea0
     HEAD_REF master
+    PATCHES
+        find-klu.patch
     GITHUB_HOST https://github.com
 )
 
