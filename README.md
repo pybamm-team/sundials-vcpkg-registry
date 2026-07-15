@@ -22,11 +22,15 @@ at the root of you vcpkg installation (or project if you're using vcpkg in manif
     {
       "kind": "git",
       "repository": "https://github.com/pybamm-team/sundials-vcpkg-registry.git",
+      "baseline": "<commit SHA>",
+      "reference": "<commit SHA>",
       "packages": [ "sundials" ]
     }
   ]
 }
 ```
+`baseline` is required for `git` registries; set both `baseline` and `reference`
+to a commit SHA of this registry (see [Updating the port](#updating-the-port)).
 
 Next, you can install sundials with KLU support with
 ```shell
@@ -38,8 +42,10 @@ this will installed sundials with KLU support, along with the required dependenc
 ### Summary of changes
 
 The main change compared to the official port is a `klu` feature that depends on
-vcpkg's split `suitesparse-klu` port (which pulls in only AMD, BTF, COLAMD, and
-SuiteSparse_config — no LAPACK or Fortran toolchain):
+vcpkg's split `suitesparse-klu` port, which pulls in only the AMD, BTF, COLAMD, and
+SuiteSparse_config components of SuiteSparse. Its one non-SuiteSparse dependency is
+BLAS (OpenBLAS off Apple platforms), built with `NOFORTRAN=ON` and
+`BUILD_WITHOUT_LAPACK=ON` — so no LAPACK or Fortran toolchain is required:
 
   ```json
   # ports/sundials/vcpkg.json
