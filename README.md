@@ -8,7 +8,7 @@ See
 
 sundials [is available through vcpkg](https://github.com/microsoft/vcpkg/tree/master/ports/sundials), but is compiled without KLU
 support.  To enable this, the portfile (among other things) must be
-modified to enable KLU support (i.e. setting `KLU_ENABLE` to `TRUE`) but
+modified to enable KLU support (i.e. setting `ENABLE_KLU` to `ON`) but
 also find the SuiteSparse library.
 
 ### Installing sundials from this registry
@@ -77,4 +77,16 @@ The two main changes compared are:
   )
   ```
   See the vcpkg docs at [Patching Example: Patching libpng to work for x64-uwp](https://github.com/microsoft/vcpkg/blob/master/docs/examples/patching.md).
+
+### Updating the port
+
+1. Edit `ports/sundials/` and commit. For a new SUNDIALS release bump `REF`/`SHA512`
+   in `portfile.cmake` and `version-semver` in `vcpkg.json`; when only the port
+   changes, bump `port-version` instead.
+2. Update the versions database from the committed tree:
+   `vcpkg x-add-version sundials --x-builtin-ports-root=./ports --x-builtin-registry-versions-dir=./versions`
+   (or prepend `git rev-parse HEAD:ports/sundials` to `versions/s-/sundials.json`
+   and bump `versions/baseline.json` by hand). Commit.
+3. Consumers pin the resulting commit SHA as both `baseline` and `reference` in
+   their `vcpkg-configuration.json`.
 
