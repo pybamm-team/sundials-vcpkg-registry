@@ -37,9 +37,10 @@ this will installed sundials with KLU support, along with the required dependenc
 
 ### Summary of changes
 
-The two main changes compared are:
+The main change compared to the official port is a `klu` feature that depends on
+vcpkg's split `suitesparse-klu` port (which pulls in only AMD, BTF, COLAMD, and
+SuiteSparse_config — no LAPACK or Fortran toolchain):
 
-- A `klu` feature that depends on SuiteSparse
   ```json
   # ports/sundials/vcpkg.json
   {
@@ -48,12 +49,12 @@ The two main changes compared are:
     "features": {
 	    "klu": {
 	        "description": "KLU support for SUNDIALS",
-	        "dependencies": ["suitesparse"]
+	        "dependencies": ["suitesparse-klu"]
 	        }
       }
   }
   ```
-  
+
   ```cmake
   # ports/sundials/portfile.cmake
   #...
@@ -64,19 +65,10 @@ The two main changes compared are:
   endif()
   # ...
   ```
-- A `find-klu.patch` patch that makes sure CMake finds vcpkg's SuiteSparse when
-  compiling sundials.
-  ```cmake
-  # ports/sundials/portfile.cmake
-  vcpkg_from_github(
-    OUT_SOURCE_PATH SOURCE_PATH
-    REPO LLNL/sundials
-    # ...
-    PATCHES "find-klu.patch"
-    # ...
-  )
-  ```
-  See the vcpkg docs at [Patching Example: Patching libpng to work for x64-uwp](https://github.com/microsoft/vcpkg/blob/master/docs/examples/patching.md).
+
+No source patching is required: SUNDIALS' own `FindKLU.cmake` prefers
+`find_package(KLU CONFIG)`, which `suitesparse-klu`'s installed CMake config
+satisfies.
 
 ### Updating the port
 
