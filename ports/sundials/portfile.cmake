@@ -4,8 +4,6 @@ vcpkg_from_github(
     REF v7.6.0
     SHA512 b6d15f68f25c5326bd42abb5e3652cc98e83d2eb31b213c9144b46c5b93fd123be5972e9d36217fdd09a0002dee3f78e530c21eda85f3b4d1d8d93b007546ea0
     HEAD_REF master
-    PATCHES
-        find-klu.patch
     GITHUB_HOST https://github.com
 )
 
@@ -20,7 +18,7 @@ endif()
 
 vcpkg_cmake_configure(
     SOURCE_PATH "${SOURCE_PATH}"
-    OPTIONS 
+    OPTIONS
         -DEXAMPLES_ENABLE_C=OFF
         -DEXAMPLES_ENABLE_CXX=OFF
         -DBUILD_STATIC_LIBS=${SUN_BUILD_STATIC}
@@ -29,7 +27,7 @@ vcpkg_cmake_configure(
         -DENABLE_OPENMP=ON
 )
 
-vcpkg_install_cmake(DISABLE_PARALLEL)
+vcpkg_cmake_install(DISABLE_PARALLEL)
 
 file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")
 
