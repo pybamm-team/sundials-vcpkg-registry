@@ -8,7 +8,7 @@ See
 
 sundials [is available through vcpkg](https://github.com/microsoft/vcpkg/tree/master/ports/sundials), but is compiled without KLU
 support.  To enable this, the portfile (among other things) must be
-modified to enable KLU support (i.e. setting `KLU_ENABLE` to `TRUE`) but
+modified to enable KLU support (i.e. setting `ENABLE_KLU` to `ON`) but
 also find the SuiteSparse library.
 
 ### Installing sundials from this registry
@@ -22,11 +22,15 @@ at the root of you vcpkg installation (or project if you're using vcpkg in manif
     {
       "kind": "git",
       "repository": "https://github.com/pybamm-team/sundials-vcpkg-registry.git",
+      "baseline": "<commit SHA>",
+      "reference": "<commit SHA>",
       "packages": [ "sundials" ]
     }
   ]
 }
 ```
+`baseline` is required for `git` registries; set both `baseline` and `reference`
+to a commit SHA of this registry (see [Updating the port](#updating-the-port)).
 
 Next, you can install sundials with KLU support with
 ```shell
@@ -37,9 +41,12 @@ this will installed sundials with KLU support, along with the required dependenc
 
 ### Summary of changes
 
-The two main changes compared are:
+The main change compared to the official port is a `klu` feature that depends on
+vcpkg's split `suitesparse-klu` port, which pulls in only the AMD, BTF, COLAMD, and
+SuiteSparse_config components of SuiteSparse. Its one non-SuiteSparse dependency is
+BLAS (OpenBLAS off Apple platforms), built with `NOFORTRAN=ON` and
+`BUILD_WITHOUT_LAPACK=ON` — so no LAPACK or Fortran toolchain is required:
 
-- A `klu` feature that depends on SuiteSparse
   ```json
   # ports/sundials/vcpkg.json
   {
@@ -48,12 +55,12 @@ The two main changes compared are:
     "features": {
 	    "klu": {
 	        "description": "KLU support for SUNDIALS",
-	        "dependencies": ["suitesparse"]
+	        "dependencies": ["suitesparse-klu"]
 	        }
       }
   }
   ```
-  
+
   ```cmake
   # ports/sundials/portfile.cmake
   #...
@@ -64,17 +71,20 @@ The two main changes compared are:
   endif()
   # ...
   ```
-- A `find-klu.patch` patch that makes sure CMake finds vcpkg's SuiteSparse when
-  compiling sundials.
-  ```cmake
-  # ports/sundials/portfile.cmake
-  vcpkg_from_github(
-    OUT_SOURCE_PATH SOURCE_PATH
-    REPO LLNL/sundials
-    # ...
-    PATCHES "find-klu.patch"
-    # ...
-  )
-  ```
-  See the vcpkg docs at [Patching Example: Patching libpng to work for x64-uwp](https://github.com/microsoft/vcpkg/blob/master/docs/examples/patching.md).
+
+No source patching is required: SUNDIALS' own `FindKLU.cmake` prefers
+`find_package(KLU CONFIG)`, which `suitesparse-klu`'s installed CMake config
+satisfies.
+
+### Updating the port
+
+1. Edit `ports/sundials/` and commit. For a new SUNDIALS release bump `REF`/`SHA512`
+   in `portfile.cmake` and `version-semver` in `vcpkg.json`; when only the port
+   changes, bump `port-version` instead.
+2. Update the versions database from the committed tree:
+   `vcpkg x-add-version sundials --x-builtin-ports-root=./ports --x-builtin-registry-versions-dir=./versions`
+   (or prepend `git rev-parse HEAD:ports/sundials` to `versions/s-/sundials.json`
+   and bump `versions/baseline.json` by hand). Commit.
+3. Consumers pin the resulting commit SHA as both `baseline` and `reference` in
+   their `vcpkg-configuration.json`.
 
